@@ -14,13 +14,20 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.TextWatcher;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -30,30 +37,20 @@ public class MainActivity extends AppCompatActivity {
 
     private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
-    private FrameLayout stickersLayout;
+    private ViewGroup stickersLayout;
     private ArrayList<StickerView> views = new ArrayList<>();
+
+    private EditText editText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (getSupportActionBar() != null) {
-//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            getSupportActionBar().setDisplayShowCustomEnabled(true);
-            getSupportActionBar().setCustomView(R.layout.custom_action_bar);
+        setupActionBar();
 
-            View actionBarView = getSupportActionBar().getCustomView();
-            ImageButton addStickerButton = actionBarView.findViewById(R.id.stickers_button);
-            addStickerButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    createSticker();
-                }
-            });
-        }
+        this.editText = findViewById(R.id.edit_text);
         this.stickersLayout = findViewById(R.id.stickers_layout);
-        Log.e("onCreate", stickersLayout.getWidth() + " - " + stickersLayout.getHeight());
 
         Button saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -73,13 +70,74 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+/*        String myString = "";
+        Spannable spanna = new SpannableString(myString);
+        spanna.setSpan(new BackgroundColorSpan(0xFFCCCCCC), 0, myString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        editText.setText(spanna);*/
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                updateSpannableEditText(editable);
+            }
+        });
+
+    }
+
+    Spannable span;
+    void updateSpannableEditText(CharSequence charSequence){
+
+        int color = flag ? 0xFFCCCCCC : 0xFFCC00CC;
+        span = (Spannable) charSequence;
+        span.setSpan(new BackgroundColorSpan(color), 0, editText.getText().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    public boolean flag = true;
+
+    private void setupActionBar() {
+        if (getSupportActionBar() != null) {
+//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setDisplayShowCustomEnabled(true);
+            getSupportActionBar().setCustomView(R.layout.custom_action_bar);
+
+            View actionBarView = getSupportActionBar().getCustomView();
+            ImageButton addStickerButton = actionBarView.findViewById(R.id.stickers_button);
+            addStickerButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    createSticker();
+                }
+            });
+
+            ImageButton changeStyle = findViewById(R.id.change_style_button);
+            changeStyle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (flag) {
+                        editText.setTextAppearance(getApplicationContext(), R.style.TextViewStyle1);
+                    } else {
+                        editText.setTextAppearance(getApplicationContext(), R.style.TextViewStyle2);
+                    }
+                    flag = !flag;
+                    updateSpannableEditText(editText.getText());
+                }
+            });
+        }
     }
 
     private void createSticker() {
-        Log.e("createSticker", stickersLayout.getWidth() + " - " + stickersLayout.getHeight());
         StickerView stickerView = new StickerView(this, R.drawable.sticker_1);
-        stickerView.setLeft(stickersLayout.getWidth() / 2);
-        stickerView.setTop(stickersLayout.getHeight() / 2);
 
         if (views.size() > 0) views.get(views.size() - 1).setActive(false);
         stickerView.setActive(true);

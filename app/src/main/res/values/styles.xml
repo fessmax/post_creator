@@ -8,4 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TextViewStyle1" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextViewStyle2" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/blackText</item>
+        <item name="android:gravity">center</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textStyle">italic</item>
+        <item name="android:textSize">35sp</item>
+    </style>
+
 </resources>
