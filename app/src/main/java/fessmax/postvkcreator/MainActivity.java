@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
     private ViewGroup stickersLayout;
-    private ViewGroup frameLayout;
     private ArrayList<StickerView> views = new ArrayList<>();
     private ImageButton addStickerButton;
     private ImageButton changeStyle;
@@ -92,14 +92,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-//        frameLayout = findViewById(R.id.frame_layout);
-        stickersLayout.setOnTouchListener(new View.OnTouchListener() {
+        stickersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                Log.e("onTouch", "stickerslayout");
-                editText.requestFocus();
-                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                return true;
+            public void onClick(View view) {
+                if (editText.requestFocus()) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    if (imm != null) {
+                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    }
+                }
             }
         });
     }
@@ -169,7 +170,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         views.add(stickerView);
         stickersLayout.addView(stickerView);
-        Log.e("createSticker", stickersLayout.getWidth() + " - " + stickersLayout.getHeight());
     }
 
 

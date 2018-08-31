@@ -4,14 +4,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 @SuppressLint("AppCompatCustomView")
 public class StickerView extends ImageView implements View.OnTouchListener {
@@ -49,9 +46,6 @@ public class StickerView extends ImageView implements View.OnTouchListener {
     }
 
     private boolean checkCorrectTouch(MotionEvent event) {
-
-        Log.e("checkCorrectTouch", event.getPointerCount() + "");
-
         int[] position = new int[2];
         getLocationInWindow(position);
         float eventX = event.getRawX();
@@ -75,10 +69,9 @@ public class StickerView extends ImageView implements View.OnTouchListener {
         width = rwidth;
         height = rheight;
 
-        Log.e("position in window", position[0] + " - " + position[1]);
-        Log.e("event", event.getRawX() + " - " + event.getRawY());
-//        Log.e("matrix", matrixNoRotate.toString());
-        Log.e("values", globalX + ", " + globalY + "; " + width + " - " + height + "; " + rwidth + " - " + rheight);
+//        Log.e("position in window", position[0] + " - " + position[1]);
+//        Log.e("event", event.getRawX() + " - " + event.getRawY());
+//        Log.e("values", globalX + ", " + globalY + "; " + width + " - " + height + "; " + rwidth + " - " + rheight);
 
         float lX = position[0] + globalX - 100;
         float rX = position[0] + globalX + width + 100;
@@ -89,7 +82,6 @@ public class StickerView extends ImageView implements View.OnTouchListener {
     }
 
     public boolean onTouch(View v, MotionEvent event) {
-        Log.e("onTouch", "123");
         if (!checkCorrectTouch(event)) return false;
         ImageView view = (ImageView) v;
         switch (event.getActionMasked()) {
