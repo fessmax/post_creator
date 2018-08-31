@@ -28,14 +28,13 @@
             android:layout_height="match_parent"
             />
 
-        <EditText
+        <fessmax.postvkcreator.EditTextNoTouch
             android:id="@+id/edit_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:focusableInTouchMode="true"
             android:layout_gravity="center"
             android:gravity="center"
-            android:maxLength="150"
             android:background="@android:color/transparent"
             android:textCursorDrawable="@drawable/edit_text_cursor_drawable"
             android:hint="Hello world!" />
