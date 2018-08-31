@@ -33,7 +33,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            style="@style/TextViewStyle2"
+            android:gravity="center"
+            android:maxLength="150"
+            android:background="@android:color/transparent"
+            android:textCursorDrawable="@drawable/edit_text_cursor_drawable"
             android:hint="Hello world!" />
     </FrameLayout>
 

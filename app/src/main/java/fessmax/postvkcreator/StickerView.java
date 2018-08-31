@@ -89,6 +89,7 @@ public class StickerView extends ImageView implements View.OnTouchListener {
     }
 
     public boolean onTouch(View v, MotionEvent event) {
+        Log.e("onTouch", "123");
         if (!checkCorrectTouch(event)) return false;
         ImageView view = (ImageView) v;
         switch (event.getActionMasked()) {

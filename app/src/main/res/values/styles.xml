@@ -8,18 +8,28 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="TextViewStyle1" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/whiteText</item>
-        <item name="android:typeface">monospace</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name="TextViewStyle2" parent="@android:style/TextAppearance">
+    <style name="TextViewStyleSimple" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/blackText</item>
         <item name="android:gravity">center</item>
         <item name="android:typeface">monospace</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextViewStyleBlack" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:gravity">center</item>
+        <item name="android:typeface">monospace</item>
         <item name="android:textStyle">italic</item>
-        <item name="android:textSize">35sp</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="TextViewStylePink" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/whiteText</item>
+        <item name="android:gravity">center</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">25sp</item>
     </style>
 
 </resources>
