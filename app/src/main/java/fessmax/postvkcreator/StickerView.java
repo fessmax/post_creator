@@ -29,20 +29,13 @@ public class StickerView extends ImageView implements View.OnTouchListener {
     private float d = 0f;
     private float[] lastEvent = null;
 
-    private boolean activeFlag = false;
-
     public StickerView(Context context, int resId) {
         super(context);
         setImageResource(resId);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-//        setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
         setScaleType(ImageView.ScaleType.MATRIX);
 
         setOnTouchListener(this);
-    }
-
-    public void setActive(boolean activeFlag) {
-        this.activeFlag = activeFlag;
     }
 
     private boolean checkCorrectTouch(MotionEvent event) {

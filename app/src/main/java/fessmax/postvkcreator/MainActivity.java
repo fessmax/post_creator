@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,6 +17,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Guideline;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
+    private ViewGroup mainLayout;
     private ViewGroup stickersLayout;
     private ArrayList<StickerView> views = new ArrayList<>();
     private ImageButton addStickerButton;
@@ -70,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupViews() {
+        mainLayout = findViewById(R.id.main_layout);
+
         editText = findViewById(R.id.edit_text);
         stickersLayout = findViewById(R.id.stickers_layout);
 
@@ -152,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (view.equals(addStickerButton)) {
             createSticker();
         } else if (view.equals(saveButton)) {
-            tryToSaveImageFromView(stickersLayout);
+            tryToSaveImageFromView(mainLayout);
         }
     }
 
@@ -164,13 +170,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void createSticker() {
         StickerView stickerView = new StickerView(this, R.drawable.sticker_1);
-
-        if (views.size() > 0) views.get(views.size() - 1).setActive(false);
-        stickerView.setActive(true);
-
         views.add(stickerView);
         stickersLayout.addView(stickerView);
     }
 
+    private void changeBackground(){
+
+    }
 
 }
