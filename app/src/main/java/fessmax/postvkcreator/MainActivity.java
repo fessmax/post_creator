@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.ColorInt;
@@ -22,6 +24,8 @@ import android.support.constraint.Guideline;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -42,12 +46,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, BackgroundAdapter.OnItemClickListener, EditTextNoTouch.OnTextChangeListener {
 
     private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+
+    private final int SELECT_PICTURE = 1001;
+    private final int SELECT_STICKER = 1002;
 
     private ViewGroup mainLayout;
     private ViewGroup stickersLayout;
@@ -55,10 +64,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton addStickerButton;
     private ImageButton changeStyle;
     private Button saveButton;
-    private EditText editText;
+    private EditTextNoTouch editText;
 
-    private ArrayList<TextStyle> textStyles;
-    private int currentIdStyle;
+    private Background[] backgrounds;
+    private RecyclerView backgroundsRV;
+    private RecyclerView.LayoutManager backgroundsLM;
+    private RecyclerView.Adapter backgroundsAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,36 +78,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         setupActionBar();
         setupViews();
-
-        textStyles = TextStyle.generateSyles();
-        currentIdStyle = -1;
-        changeStyle();
     }
 
     private void setupViews() {
         mainLayout = findViewById(R.id.main_layout);
 
         editText = findViewById(R.id.edit_text);
+        editText.addOnTextChangedListener(this);
         stickersLayout = findViewById(R.id.stickers_layout);
 
         saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(this);
-
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-                CommonHelper.updateSpannableEditText(editText, textStyles.get(currentIdStyle));
-            }
-        });
 
         stickersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +101,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         });
+        backgrounds = Background.generateBackgrounds();
+        backgroundsRV = findViewById(R.id.backgrounds_rv);
+        backgroundsRV.setHasFixedSize(true);
+
+        backgroundsLM = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        backgroundsRV.setLayoutManager(backgroundsLM);
+
+        backgroundsAdapter = new BackgroundAdapter(this, backgrounds, this);
+        backgroundsRV.setAdapter(backgroundsAdapter);
+
+        changeBackground(backgrounds[0].bigImageResId);
+
+
     }
 
     private void setupActionBar() {
@@ -150,11 +155,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     @Override
     public void onClick(View view) {
         if (view.equals(changeStyle)) {
-            changeStyle();
+            editText.changeStyle();
         } else if (view.equals(addStickerButton)) {
             createSticker();
         } else if (view.equals(saveButton)) {
@@ -162,20 +166,64 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void changeStyle() {
-        currentIdStyle = (currentIdStyle + 1) % textStyles.size();
-        editText.setTextAppearance(getApplicationContext(), textStyles.get(currentIdStyle).styleId);
-        CommonHelper.updateSpannableEditText(editText, textStyles.get(currentIdStyle));
-    }
-
     private void createSticker() {
+
+        Intent intent = new Intent(this, StickersActivity.class);
+
+        startActivityForResult(intent, SELECT_STICKER);
+        overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+/*
         StickerView stickerView = new StickerView(this, R.drawable.sticker_1);
         views.add(stickerView);
         stickersLayout.addView(stickerView);
+*/
     }
 
-    private void changeBackground(){
-
+    private void changeBackground(Drawable drawable) {
+        stickersLayout.setBackground(drawable);
     }
 
+    private void changeBackground(int resId) {
+        stickersLayout.setBackgroundResource(resId);
+    }
+
+    private void callSelectionGallery() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select background"), SELECT_PICTURE);
+    }
+
+    @Override
+    public void onItemClick(Background item) {
+        if (item.fromGallery) {
+            callSelectionGallery();
+        } else {
+            changeBackground(item.bigImageResId);
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_PICTURE) {
+                Uri selectedImageUri = data.getData();
+
+                Drawable bg;
+                try {
+                    if (selectedImageUri != null) {
+                        InputStream inputStream = getContentResolver().openInputStream(selectedImageUri);
+                        bg = Drawable.createFromStream(inputStream, selectedImageUri.toString());
+                        changeBackground(bg);
+                    }
+                } catch (Exception e) {
+                    Log.e("onActivityResult", e.getMessage(), e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void OnTextChanged(boolean isNotEmpty) {
+        saveButton.setEnabled(isNotEmpty);
+    }
 }

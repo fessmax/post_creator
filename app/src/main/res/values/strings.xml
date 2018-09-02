@@ -3,4 +3,5 @@
     <string name="default_hint">Что у Вас нового?</string>
     <string name="default_header">Новая запись</string>
     <string name="button_save_text">Сохранить</string>
+    <string name="default_header_stickers">Стикеры</string>
 </resources>

@@ -3,7 +3,7 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:tileMode="repeat"
+            android:tileMode="clamp"
             android:src="@drawable/bg_beach_center" />
     </item>
     <item>
@@ -13,7 +13,7 @@
     </item>
     <item>
         <bitmap
-            android:gravity="top"
+            android:gravity="top|fill_horizontal"
             android:src="@drawable/bg_beach_top" />
     </item>
 </layer-list>

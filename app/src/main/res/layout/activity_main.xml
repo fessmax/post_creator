@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/whiteText"
     tools:context=".MainActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_panel"
-        >
+        android:layout_above="@id/bottom_panel">
 
         <fessmax.postvkcreator.SquaredFrameLayout
             android:id="@+id/main_layout"
@@ -36,36 +36,56 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:maxLength="150"
-                android:maxLines="5"
                 android:background="@android:color/transparent"
                 android:focusableInTouchMode="true"
                 android:gravity="center"
                 android:hint="@string/default_hint"
+                android:maxLength="150"
+                android:maxLines="5"
                 android:textCursorDrawable="@drawable/edit_text_cursor_drawable" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:background="@drawable/white_round">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:src="@drawable/trash_icon" />
+            </FrameLayout>
         </fessmax.postvkcreator.SquaredFrameLayout>
 
     </FrameLayout>
+
     <RelativeLayout
         android:id="@+id/bottom_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_purple"
-        android:orientation="horizontal"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="@color/whiteText"
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/keyboard_button"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/backgrounds_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@id/save_button" />
+            android:layout_toStartOf="@id/save_button"
+            android:background="@color/whiteText"
+            android:orientation="horizontal"
+            android:scrollbars="none" />
 
         <Button
             android:id="@+id/save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:enabled="false"
             android:text="@string/button_save_text" />
 
     </RelativeLayout>
+
 </RelativeLayout>

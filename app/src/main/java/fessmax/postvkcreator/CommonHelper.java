@@ -2,9 +2,14 @@ package fessmax.postvkcreator;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
 import android.support.annotation.ColorInt;
@@ -78,8 +83,6 @@ public class CommonHelper {
     public static void updateSpannableEditText(EditText view, TextStyle textStyle) {
         Spannable span = (Spannable) view.getText();
         span.setSpan(new BackgroundColorSpan(textStyle.spanColor), 0, view.getText().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
         CommonHelper.setCursorColor(view, textStyle.cursorColor);
     }
-
 }

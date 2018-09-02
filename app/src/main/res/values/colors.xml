@@ -7,5 +7,5 @@
     <color name="blackText">#000000</color>
     <color name="alphaTextBG">#99000000</color>
     <color name="common_border_color">#33ffffff</color>
-
+    <color name="semi_alpha_bg">#aad6e3f3</color>
 </resources>
