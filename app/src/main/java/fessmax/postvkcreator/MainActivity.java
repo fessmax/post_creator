@@ -2,58 +2,31 @@ package fessmax.postvkcreator;
 
 import android.Manifest;
 import android.app.ActionBar;
-import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Guideline;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.TextWatcher;
-import android.text.style.BackgroundColorSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, BackgroundAdapter.OnItemClickListener, EditTextNoTouch.OnTextChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, BackgroundAdapter.OnItemClickListener, EditTextNoTouch.OnTextChangeListener, TrashImageView.OnTrashView {
 
     private final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
 
@@ -67,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageButton changeStyle;
     private Button saveButton;
     private EditTextNoTouch editText;
+    private TrashImageView trash;
 
     private Background[] backgrounds;
     private RecyclerView backgroundsRV;
@@ -92,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         saveButton = findViewById(R.id.save_button);
         saveButton.setOnClickListener(this);
 
+        trash = findViewById(R.id.trash);
+        trash.setOnTrashViewListener(this);
         stickersLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,8 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         backgroundsRV.setAdapter(backgroundsAdapter);
 
         changeBackground(backgrounds[0].bigImageResId);
-
-
     }
 
     private void setupActionBar() {
@@ -180,9 +154,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void createSticker(int resId) {
-        StickerView stickerView = new StickerView(this, resId);
+        StickerView stickerView = new StickerView(this, resId, trash);
         views.add(stickerView);
         stickersLayout.addView(stickerView);
+    }
+
+    private void deleteSticker(View view){
+        views.remove(view);
+        stickersLayout.removeView(view);
     }
 
     private void changeBackground(Drawable drawable) {
@@ -236,5 +215,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void OnTextChanged(boolean isNotEmpty) {
         saveButton.setEnabled(isNotEmpty);
+    }
+
+    @Override
+    public void trashView(View view) {
+        deleteSticker(view);
     }
 }

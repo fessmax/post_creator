@@ -13,6 +13,10 @@ import android.widget.ImageView;
 @SuppressLint("AppCompatCustomView")
 public class StickerView extends ImageView implements View.OnTouchListener {
 
+    public interface OnStickerMoveListener {
+        void onStickerMove(MotionEvent event, View view);
+    }
+
     private Matrix matrix = new Matrix();
     private Matrix savedMatrix = new Matrix();
     private Matrix matrixNoRotate = new Matrix();
@@ -29,13 +33,16 @@ public class StickerView extends ImageView implements View.OnTouchListener {
     private float d = 0f;
     private float[] lastEvent = null;
 
-    public StickerView(Context context, int resId) {
+    private OnStickerMoveListener stickerMoveListener;
+
+    public StickerView(Context context, int resId, OnStickerMoveListener listener) {
         super(context);
         setImageResource(resId);
         setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         setScaleType(ImageView.ScaleType.MATRIX);
 
         setOnTouchListener(this);
+        this.stickerMoveListener = listener;
     }
 
     private boolean checkCorrectTouch(MotionEvent event) {
@@ -104,6 +111,7 @@ public class StickerView extends ImageView implements View.OnTouchListener {
             case MotionEvent.ACTION_POINTER_UP:
                 mode = NONE;
                 lastEvent = null;
+                if (stickerMoveListener != null) stickerMoveListener.onStickerMove(event, this);
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (mode == DRAG) {
@@ -113,6 +121,7 @@ public class StickerView extends ImageView implements View.OnTouchListener {
                     float dy = event.getY() - start.y;
                     matrix.postTranslate(dx, dy);
                     matrixNoRotate.postTranslate(dx, dy);
+                    if (stickerMoveListener != null) stickerMoveListener.onStickerMove(event, this);
                 } else if (mode == ZOOMROTATE) {
                     float newDist = spacing(event);
                     if (newDist > 10f) {

@@ -38,20 +38,24 @@
                 android:inputType="textMultiLine|textNoSuggestions"
                 android:textCursorDrawable="@drawable/edit_text_cursor_drawable" />
 
-            <FrameLayout
+
+            <fessmax.postvkcreator.TrashImageView
+                android:id="@+id/trash"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_margin="15dp"
+                android:layout_marginBottom="25dp"
+                android:src="@drawable/trash_icon" />
+<!--            <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/white_round">
 
-                <ImageView
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:src="@drawable/trash_icon" />
-            </FrameLayout>
+            </FrameLayout>-->
         </fessmax.postvkcreator.SquaredFrameLayout>
 
     </FrameLayout>
@@ -61,6 +65,7 @@
         android:background="@color/semi_alpha_bg"
         android:layout_above="@id/bottom_panel"
         />
+
     <RelativeLayout
         android:id="@+id/bottom_panel"
         android:layout_width="match_parent"
@@ -73,34 +78,35 @@
             android:id="@+id/backgrounds_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_toStartOf="@id/save_button"
             android:background="@color/whiteText"
             android:orientation="horizontal"
-            android:layout_centerVertical="true"
             android:scrollbars="none" />
+
         <View
             android:layout_width="1dp"
             android:layout_height="50dp"
-            android:background="@color/semi_alpha_bg"
-            android:layout_toStartOf="@id/save_button"
             android:layout_centerVertical="true"
-            />
+            android:layout_toStartOf="@id/save_button"
+            android:background="@color/semi_alpha_bg" />
+
         <Button
             android:id="@+id/save_button"
-            android:background="@drawable/button_save_drawable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:enabled="false"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:background="@drawable/button_save_drawable"
+            android:enabled="false"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="@string/button_save_text"
-            android:textColor="@color/whiteText"/>
+            android:textColor="@color/whiteText" />
 
     </RelativeLayout>
 
