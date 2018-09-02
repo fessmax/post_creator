@@ -160,23 +160,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view.equals(changeStyle)) {
             editText.changeStyle();
         } else if (view.equals(addStickerButton)) {
-            createSticker();
+            callSelectSticker();
         } else if (view.equals(saveButton)) {
             tryToSaveImageFromView(mainLayout);
         }
     }
 
-    private void createSticker() {
+    private void callSelectSticker() {
 
         Intent intent = new Intent(this, StickersActivity.class);
 
         startActivityForResult(intent, SELECT_STICKER);
-        overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
-/*
-        StickerView stickerView = new StickerView(this, R.drawable.sticker_1);
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_stay);
+    }
+
+    private void createSticker(int resId) {
+        StickerView stickerView = new StickerView(this, resId);
         views.add(stickerView);
         stickersLayout.addView(stickerView);
-*/
     }
 
     private void changeBackground(Drawable drawable) {
@@ -217,6 +218,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 } catch (Exception e) {
                     Log.e("onActivityResult", e.getMessage(), e);
+                }
+            } else if (requestCode == SELECT_STICKER) {
+                if (data != null) {
+                    int stickerResId = data.getIntExtra(StickersActivity.SELECTED_STICKER_ID, 0);
+                    createSticker(stickerResId);
                 }
             }
         }
