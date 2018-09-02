@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/global_color">
 
     <ImageButton
         android:id="@+id/change_style_button"
@@ -10,7 +11,8 @@
         android:src="@drawable/ic_toolbar_font"
         android:background="@android:color/transparent"
         android:layout_alignParentStart="true"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
+        android:layout_centerVertical="true"
         />
 
     <ImageButton
@@ -20,7 +22,8 @@
         android:src="@drawable/ic_toolbar_sticker"
         android:background="@android:color/transparent"
         android:layout_alignParentEnd="true"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
+        android:layout_centerVertical="true"
         />
 
     <TextView
@@ -28,5 +31,6 @@
         android:layout_height="wrap_content"
         android:text="@string/default_header"
         android:layout_centerInParent="true"
+        android:textAppearance="@style/MainHeaderStyle"
         />
 </RelativeLayout>

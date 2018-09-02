@@ -26,12 +26,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.BackgroundColorSpan;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,9 +120,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupActionBar() {
         if (getSupportActionBar() != null) {
-//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             getSupportActionBar().setDisplayShowCustomEnabled(true);
             getSupportActionBar().setCustomView(R.layout.custom_action_bar);
+
+            Toolbar parent = (Toolbar) getSupportActionBar().getCustomView().getParent();
+            parent.setContentInsetsAbsolute(0, 0);
 
             View actionBarView = getSupportActionBar().getCustomView();
             addStickerButton = actionBarView.findViewById(R.id.stickers_button);

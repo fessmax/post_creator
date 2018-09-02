@@ -5,9 +5,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import java.util.ArrayList;
@@ -69,8 +67,10 @@ public class EditTextNoTouch extends EditText {
 
     public void changeStyle() {
         currentIdStyle = (currentIdStyle + 1) % textStyles.size();
-        setTextAppearance(getContext(), textStyles.get(currentIdStyle).styleId);
-        CommonHelper.updateSpannableEditText(this, textStyles.get(currentIdStyle));
+        TextStyle curStyle = textStyles.get(currentIdStyle);
+        setTextAppearance(getContext(), curStyle.styleId);
+        setHintTextColor(curStyle.hintColor);
+        CommonHelper.updateSpannableEditText(this, curStyle);
     }
 
     public void addOnTextChangedListener(OnTextChangeListener listener) {

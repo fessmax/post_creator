@@ -8,4 +8,9 @@
     <color name="alphaTextBG">#99000000</color>
     <color name="common_border_color">#33ffffff</color>
     <color name="semi_alpha_bg">#33000000</color>
+    <color name="save_button_normal">#ff538ccc</color>
+    <color name="save_button_disable">#c4d7ed</color>
+    <color name="save_button_pressed">#1d3d62</color>
+    <color name="main_color">#ff538ccc</color>
+    <color name="global_color">#ffffff</color>
 </resources>

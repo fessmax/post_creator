@@ -2,13 +2,14 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/bg_icons_size"
     android:layout_height="@dimen/bg_icons_size"
-    android:background="@drawable/rounded_corner"
+    android:background="@drawable/background_card_selector"
     android:layout_margin="2dp"
     >
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/image"
+        android:cropToPadding="true"
         android:src="@drawable/thumb_beach"
         />
 </FrameLayout>

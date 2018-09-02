@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
 import android.support.annotation.ColorInt;
@@ -84,5 +85,38 @@ public class CommonHelper {
         Spannable span = (Spannable) view.getText();
         span.setSpan(new BackgroundColorSpan(textStyle.spanColor), 0, view.getText().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         CommonHelper.setCursorColor(view, textStyle.cursorColor);
+    }
+
+    public static Bitmap getRoundedCornerBitmap(Drawable drawable, float radius) {
+        Bitmap bitmap = null;
+        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas c = new Canvas(bitmap);
+        drawable.setBounds(0, 0, c.getWidth(), c.getHeight());
+        drawable.draw(c);
+
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap
+                .getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = radius;
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
     }
 }

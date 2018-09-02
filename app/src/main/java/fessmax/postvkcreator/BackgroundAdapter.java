@@ -15,6 +15,7 @@ public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.Ba
     private Background[] mDataset;
     private Context mContext;
     private OnItemClickListener mListener;
+    private int selectedId = 0;
 
     public static class BackgroundViewHolder extends RecyclerView.ViewHolder {
         public View mView;
@@ -24,6 +25,15 @@ public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.Ba
             super(view);
             this.mView = view;
             mImageView = view.findViewById(R.id.image);
+        }
+
+        public void onSelect(boolean isSelected, boolean isGradient){
+            mView.setSelected(isSelected);
+            mImageView.setSelected(isSelected);
+            mImageView.setScaleX(isSelected ? 0.8f : 1f);
+            mImageView.setScaleY(isSelected ? 0.8f : 1f);
+
+            if (!isGradient) mImageView.setImageBitmap(CommonHelper.getRoundedCornerBitmap(mImageView.getDrawable(), isSelected ? 0 : 15));
         }
     }
 
@@ -44,12 +54,13 @@ public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.Ba
 
     @Override
     public void onBindViewHolder(final BackgroundViewHolder holder, int position) {
-        holder.mView.setBackgroundResource(R.drawable.rounded_corner);
         holder.mImageView.setImageDrawable(mContext.getResources().getDrawable(mDataset[position].smallImageResId));
+        holder.onSelect(selectedId == position, mDataset[position].isGradient);
         holder.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onItemClick(mDataset[holder.getAdapterPosition()]);
+                setSelected(holder.getAdapterPosition());
             }
         });
     }
@@ -57,5 +68,12 @@ public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.Ba
     @Override
     public int getItemCount() {
         return mDataset.length;
+    }
+
+    public void setSelected(int position){
+        if (position != getItemCount() - 1) {
+            selectedId = position;
+            notifyDataSetChanged();
+        }
     }
 }
