@@ -4,4 +4,8 @@
     <string name="default_header">Новая запись</string>
     <string name="button_save_text">Сохранить</string>
     <string name="default_header_stickers">Стикеры</string>
+    <string name="image_save_successfully">Изображение было успешно сохранено на устройство: %s</string>
+    <string name="image_save_unsuccessfully">При сохранении изображения произошла ошибка</string>
+    <string name="image_save_need_permission">Для сохранения изображения на устройство необходимо предоставить разрешение</string>
+    <string name="choose_background">Выберите изображение</string>
 </resources>

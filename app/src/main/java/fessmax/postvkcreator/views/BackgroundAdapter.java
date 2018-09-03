@@ -37,7 +37,7 @@ public class BackgroundAdapter extends RecyclerView.Adapter<BackgroundAdapter.Ba
             mImageView.setScaleX(isSelected ? 0.8f : 1f);
             mImageView.setScaleY(isSelected ? 0.8f : 1f);
 
-            if (!isGradient) mImageView.setImageBitmap(CommonHelper.getRoundedCornerBitmap(mImageView.getDrawable(), isSelected ? 0 : 15));
+            if (!isGradient) mImageView.setImageBitmap(CommonHelper.getRoundedCornerBitmap(mImageView.getDrawable(), isSelected, mView.getContext()));
         }
     }
 

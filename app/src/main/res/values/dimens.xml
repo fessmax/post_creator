@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="bg_icons_size">48dp</dimen>
+    <dimen name="round_square_radius">5dp</dimen>
 </resources>

@@ -86,8 +86,7 @@ public class StickersActivity extends Activity {
             // create a new view
             ImageView view = new ImageView(parent.getContext());
 
-            MyViewHolder vh = new MyViewHolder(view);
-            return vh;
+            return new MyViewHolder(view);
         }
 
         // Replace the contents of a view (invoked by the layout manager)

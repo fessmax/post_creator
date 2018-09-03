@@ -1,6 +1,7 @@
 package fessmax.postvkcreator;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,10 +16,12 @@ import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.style.BackgroundColorSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Field;
 
@@ -46,9 +49,12 @@ public class CommonHelper {
                     fileName,
                     "new post"
             );
+            String sucMessage = String.format(context.getResources().getString(R.string.image_save_successfully), savedImageURL);
+            Toast.makeText(context, sucMessage, Toast.LENGTH_SHORT).show();
             return savedImageURL;
         } catch (Exception e) {
             Log.e("saveImageFromView", e.getMessage(), e);
+            Toast.makeText(context, R.string.image_save_unsuccessfully, Toast.LENGTH_LONG).show();
             return "";
         }
     }
@@ -84,12 +90,13 @@ public class CommonHelper {
     public static void updateSpannableEditText(EditText view, TextStyle textStyle) {
         Spannable span = (Spannable) view.getText();
         span.setSpan(new BackgroundColorSpan(textStyle.spanColor), 0, view.getText().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
         CommonHelper.setCursorColor(view, textStyle.cursorColor);
     }
 
-    public static Bitmap getRoundedCornerBitmap(Drawable drawable, float radius) {
+    public static Bitmap getRoundedCornerBitmap(Drawable drawable, boolean isSelected, Context context) {
         Bitmap bitmap = null;
-        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
             bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
         } else {
             bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -107,7 +114,7 @@ public class CommonHelper {
         final Paint paint = new Paint();
         final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
         final RectF rectF = new RectF(rect);
-        final float roundPx = radius;
+        final float roundPx = isSelected ? 0 : context.getResources().getDimension(R.dimen.round_square_radius);
 
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
@@ -118,5 +125,12 @@ public class CommonHelper {
         canvas.drawBitmap(bitmap, rect, rect, paint);
 
         return output;
+    }
+
+    public static float convertDpToPixel(float dp, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
     }
 }

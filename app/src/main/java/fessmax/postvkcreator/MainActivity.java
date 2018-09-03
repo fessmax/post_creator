@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ViewGroup mainLayout;
     private ViewGroup stickersLayout;
-    private ArrayList<StickerView> views = new ArrayList<>();
     private ImageButton addStickerButton;
     private ImageButton changeStyle;
     private Button saveButton;
@@ -133,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     CommonHelper.saveImageFromView(this, viewForSave);
                 } else {
-                    Toast.makeText(this, "Please grant permission", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.image_save_need_permission, Toast.LENGTH_LONG).show();
                 }
                 break;
         }
@@ -160,12 +159,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void createSticker(int resId) {
         StickerView stickerView = new StickerView(this, resId, trash);
-        views.add(stickerView);
         stickersLayout.addView(stickerView);
     }
 
-    private void deleteSticker(View view){
-        views.remove(view);
+    private void deleteSticker(View view) {
         stickersLayout.removeView(view);
     }
 
@@ -181,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select background"), SELECT_PICTURE);
+        startActivityForResult(Intent.createChooser(intent, getResources().getString(R.string.choose_background)), SELECT_PICTURE);
     }
 
     @Override
