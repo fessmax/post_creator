@@ -1,4 +1,4 @@
-package fessmax.postvkcreator;
+package fessmax.postvkcreator.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.view.MotionEvent;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+
+import fessmax.postvkcreator.CommonHelper;
+import fessmax.postvkcreator.data.TextStyle;
 
 @SuppressLint("AppCompatCustomView")
 public class EditTextNoTouch extends EditText {

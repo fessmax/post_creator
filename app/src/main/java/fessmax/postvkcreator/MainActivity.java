@@ -15,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -25,6 +24,12 @@ import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+
+import fessmax.postvkcreator.data.Background;
+import fessmax.postvkcreator.views.BackgroundAdapter;
+import fessmax.postvkcreator.views.EditTextNoTouch;
+import fessmax.postvkcreator.views.StickerView;
+import fessmax.postvkcreator.views.TrashImageView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, BackgroundAdapter.OnItemClickListener, EditTextNoTouch.OnTextChangeListener, TrashImageView.OnTrashView {
 

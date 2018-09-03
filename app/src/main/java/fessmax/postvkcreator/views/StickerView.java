@@ -1,4 +1,4 @@
-package fessmax.postvkcreator;
+package fessmax.postvkcreator.views;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

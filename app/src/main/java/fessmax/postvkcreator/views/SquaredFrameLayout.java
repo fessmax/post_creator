@@ -1,4 +1,4 @@
-package fessmax.postvkcreator;
+package fessmax.postvkcreator.views;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

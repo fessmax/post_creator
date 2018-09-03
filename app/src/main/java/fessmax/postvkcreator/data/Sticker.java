@@ -1,6 +1,8 @@
-package fessmax.postvkcreator;
+package fessmax.postvkcreator.data;
 
 import java.util.ArrayList;
+
+import fessmax.postvkcreator.R;
 
 public class Sticker {
     public int imageName;
